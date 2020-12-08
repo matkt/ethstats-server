@@ -334,7 +334,6 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 				if( !_.isEqual($scope.lastGasLimit, data.gasLimit) && data.gasLimit.length >= MAX_BINS )
 					$scope.lastGasLimit = data.gasLimit;
-
 				if( !_.isEqual($scope.lastBlocksTime, data.blocktime) && data.blocktime.length >= MAX_BINS )
 					$scope.lastBlocksTime = data.blocktime;
 
@@ -566,10 +565,14 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 				$scope.bestStats = _.max($scope.nodes, function (node) {
 					return parseInt(node.stats.block.number);
 				}).stats;
-
 				$scope.lastBlock = $scope.bestStats.block.arrived;
 				$scope.lastDifficulty = $scope.bestStats.block.difficulty;
 			}
+var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", "http://eip1559-tx.ops.pegasys.tech:8080/basefee", false ); // false for synchronous request
+    xmlHttp.send( null );
+
+                                $scope.bestStats.block.gasLimit = JSON.parse(xmlHttp.responseText).baseFee;
 		}
 	}
 
