@@ -568,11 +568,10 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 				$scope.lastBlock = $scope.bestStats.block.arrived;
 				$scope.lastDifficulty = $scope.bestStats.block.difficulty;
 			}
-var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", "http://eip1559-tx.ops.pegasys.tech:8080/basefee", false ); // false for synchronous request
-    xmlHttp.send( null );
-
-                                $scope.bestStats.block.gasLimit = JSON.parse(xmlHttp.responseText).baseFee;
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open( "POST", "http://3.16.76.137:8545", false ); // false for synchronous request
+      xmlHttp.send( "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBlockByNumber\",\"params\":[\"latest\", false], \"id\":1}" );
+      $scope.bestStats.block.gasLimit = JSON.parse(xmlHttp.responseText).result.baseFee;
 		}
 	}
 
